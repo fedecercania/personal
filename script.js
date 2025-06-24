@@ -1,11 +1,21 @@
 // Language switching functionality
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - Initializing...');
+    
     const langButtons = document.querySelectorAll('.lang-btn');
     const elementsWithLang = document.querySelectorAll('[data-es], [data-en]');
     const pdfButton = document.getElementById('download-pdf');
     const pdfSimpleButton = document.getElementById('download-pdf-simple');
     const previewButton = document.getElementById('preview-pdf');
     const pdfLoading = document.getElementById('pdf-loading');
+    
+    // Debug button detection
+    console.log('📋 Button detection:', {
+        pdfButton: !!pdfButton,
+        pdfSimpleButton: !!pdfSimpleButton,
+        previewButton: !!previewButton,
+        pdfLoading: !!pdfLoading
+    });
     
     // Default language is Spanish
     let currentLang = 'es';
@@ -356,19 +366,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listener to PDF simple button
     if (pdfSimpleButton) {
+        console.log('✅ PDF Simple button found, adding event listener');
         pdfSimpleButton.addEventListener('click', function(e) {
+            console.log('🔵 PDF Simple button clicked!');
             e.preventDefault();
             downloadPDFPure();
         });
+    } else {
+        console.error('❌ PDF Simple button NOT found!');
     }
     
     // Add event listener to test jsPDF button
     const testJsPDFButton = document.getElementById('test-jspdf');
     if (testJsPDFButton) {
+        console.log('✅ Test jsPDF button found, adding event listener');
         testJsPDFButton.addEventListener('click', function(e) {
+            console.log('🧪 Test jsPDF button clicked!');
             e.preventDefault();
             testJsPDFLibrary();
         });
+    } else {
+        console.error('❌ Test jsPDF button NOT found!');
     }
     
     // Safe PDF optimization function (doesn't break content)
