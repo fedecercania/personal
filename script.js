@@ -1,21 +1,11 @@
 // Language switching functionality
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM Content Loaded - Initializing...');
-    
     const langButtons = document.querySelectorAll('.lang-btn');
     const elementsWithLang = document.querySelectorAll('[data-es], [data-en]');
     const pdfButton = document.getElementById('download-pdf');
     const pdfSimpleButton = document.getElementById('download-pdf-simple');
     const previewButton = document.getElementById('preview-pdf');
     const pdfLoading = document.getElementById('pdf-loading');
-    
-    // Debug button detection
-    console.log('📋 Button detection:', {
-        pdfButton: !!pdfButton,
-        pdfSimpleButton: !!pdfSimpleButton,
-        previewButton: !!previewButton,
-        pdfLoading: !!pdfLoading
-    });
     
     // Default language is Spanish
     let currentLang = 'es';
@@ -366,28 +356,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listener to PDF simple button
     if (pdfSimpleButton) {
-        console.log('✅ PDF Simple button found, adding event listener');
         pdfSimpleButton.addEventListener('click', function(e) {
-            console.log('🔵 PDF Simple button clicked!');
             e.preventDefault();
             downloadPDFPure();
         });
-    } else {
-        console.error('❌ PDF Simple button NOT found!');
     }
     
-    // Add event listener to test jsPDF button
-    const testJsPDFButton = document.getElementById('test-jspdf');
-    if (testJsPDFButton) {
-        console.log('✅ Test jsPDF button found, adding event listener');
-        testJsPDFButton.addEventListener('click', function(e) {
-            console.log('🧪 Test jsPDF button clicked!');
-            e.preventDefault();
-            testJsPDFLibrary();
-        });
-    } else {
-        console.error('❌ Test jsPDF button NOT found!');
-    }
+
     
     // Safe PDF optimization function (doesn't break content)
     function safePDFOptimization(element) {
@@ -436,46 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ Safe PDF optimizations applied');
     }
     
-    // Test jsPDF library function
-    function testJsPDFLibrary() {
-        console.log('🧪 Testing jsPDF library...');
-        console.log('Available objects:', {
-            'window.jspdf': window.jspdf,
-            'window.jsPDF': window.jsPDF
-        });
-        
-        try {
-            let doc;
-            if (window.jspdf && window.jspdf.jsPDF) {
-                console.log('✅ Using window.jspdf.jsPDF');
-                doc = new window.jspdf.jsPDF();
-            } else if (window.jsPDF) {
-                console.log('✅ Using window.jsPDF');
-                doc = new window.jsPDF();
-            } else {
-                console.error('❌ jsPDF not available');
-                alert('jsPDF library not loaded!');
-                return;
-            }
-            
-            // Create a simple test PDF
-            doc.setFontSize(20);
-            doc.text('jsPDF Test - Working!', 20, 20);
-            doc.setFontSize(12);
-            doc.text('This is a test to verify jsPDF is working correctly.', 20, 40);
-            doc.text('Generated at: ' + new Date().toLocaleString(), 20, 60);
-            
-            // Save the test PDF
-            doc.save('jsPDF_Test.pdf');
-            
-            console.log('✅ jsPDF test successful!');
-            alert('jsPDF test successful! Check your downloads.');
-            
-        } catch (error) {
-            console.error('❌ jsPDF test failed:', error);
-            alert('jsPDF test failed: ' + error.message);
-        }
-    }
+
     
     // Fix PDF positioning and color issues
     function fixPDFPositionAndColors(element) {
