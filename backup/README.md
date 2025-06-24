@@ -40,7 +40,7 @@ python3 -m http.server 8000
 ### Descargar PDF:
 - **Botón verde**: "Descargar PDF" / "Download PDF"
 - **Atajo de teclado**: `Ctrl + P` (Windows/Linux) o `Cmd + P` (Mac)
-- **Archivo generado**: `CV_Federico_Gonzalez_ES.pdf` o `CV_Federico_Gonzalez_EN.pdf`
+- **Archivo generado**: `CV_Maria_Rodriguez_ES.pdf` o `CV_Maria_Rodriguez_EN.pdf`
 
 ## 📁 Archivos del proyecto
 

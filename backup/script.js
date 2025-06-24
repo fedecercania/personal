@@ -775,7 +775,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const a = document.createElement('a');
                     a.href = downloadUrl;
-                    a.download = `CV_Federico_Gonzalez_${currentLang.toUpperCase()}.pdf`;
+                    a.download = `CV_Maria_Gonzalez_${currentLang.toUpperCase()}.pdf`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -826,7 +826,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </p>
                 
                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
-                    <a href="${downloadUrl}" download="CV_Federico_Gonzalez_${currentLang.toUpperCase()}.pdf" 
+                    <a href="${downloadUrl}" download="CV_Maria_Gonzalez_${currentLang.toUpperCase()}.pdf" 
                        style="background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 500;"
                        onclick="console.log('📥 Download triggered');">
                         📥 ${currentLang === 'es' ? 'Descargar' : 'Download'}
