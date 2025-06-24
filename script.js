@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update document title
         const titles = {
-            'es': 'María González - Desarrolladora Full Stack',
-            'en': 'María González - Full Stack Developer'
+            'es': 'Federico González Cima - Software Technical Leader',
+            'en': 'Federico González Cima - Software Technical Leader'
         };
         document.title = titles[targetLang];
         

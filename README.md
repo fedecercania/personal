@@ -60,7 +60,7 @@ python3 -m http.server 8000
 
 ## 📋 Información del CV
 
-Este CV pertenece a **María González**, una desarrolladora Full Stack ficticia con:
+Este CV pertenece a **Federico González Cima**, Software Technical Leader con:
 
 - 5+ años de experiencia en desarrollo web
 - Especializada en React, Node.js, Python y bases de datos
