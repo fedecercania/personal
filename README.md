@@ -101,4 +101,4 @@ open http://localhost:8000
 
 ---
 
-**¡Listo para usar!** 🎉 Abre `index.html` en tu navegador y disfruta de tu CV bilingüe con descarga en PDF. 
+**¡Listo para usar!** 🎉 Abre `index.html` en tu navegador y disfruta de tu CV bilingüe con descarga en PDF. # TRIGGER UPDATE Tue Jun 24 12:56:39 -03 2025
