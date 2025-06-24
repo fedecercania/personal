@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Update document title
+        // Update document title - UPDATED VERSION
         const titles = {
             'es': 'Federico González Cima - Software Technical Leader',
             'en': 'Federico González Cima - Software Technical Leader'
