@@ -1065,8 +1065,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Helper function to load image as base64
+    function loadImageAsBase64(imagePath) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous'; // Handle CORS if needed
+            
+            img.onload = function() {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set canvas size to image size
+                    canvas.width = this.naturalWidth;
+                    canvas.height = this.naturalHeight;
+                    
+                    // Draw image on canvas
+                    ctx.drawImage(this, 0, 0);
+                    
+                    // Convert to base64
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+                    resolve(dataURL);
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            
+            img.onerror = function() {
+                reject(new Error('Failed to load image: ' + imagePath));
+            };
+            
+            // Load the image
+            img.src = imagePath;
+        });
+    }
+
     // OPTION 3: Pure jsPDF generation with complete information
-    function downloadPDFPure() {
+    async function downloadPDFPure() {
         try {
             console.log('🔵 Starting PDF Simple generation...');
             console.log('Available jsPDF objects:', { 
@@ -1101,6 +1136,21 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.setFillColor(102, 126, 234);
             doc.rect(0, 0, 210, 60, 'F');
             
+            // Load and add profile image
+            try {
+                const imgData = await loadImageAsBase64('fede.jpeg');
+                if (imgData) {
+                    const imgSize = 40; // Image size in mm
+                    
+                    // Add profile image in header (top right)
+                    doc.addImage(imgData, 'JPEG', 160, 10, imgSize, imgSize);
+                    
+                    console.log('✅ Profile image added to PDF');
+                }
+            } catch (error) {
+                console.log('Could not load profile image, continuing without it:', error);
+            }
+            
             // Name
             doc.setTextColor(255, 255, 255);
             doc.setFontSize(20);
@@ -1116,10 +1166,10 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text((isSpanish ? 'Telefono: ' : 'Phone: ') + '+598 94 769 587', 20, 45);
             doc.text((isSpanish ? 'Ubicacion: ' : 'Location: ') + 'Montevideo, Uruguay', 20, 50);
             
-            // Contact info - Right column
-            doc.text((isSpanish ? 'Empresa: ' : 'Company: ') + 'MercadoLibre', 110, 40);
-            doc.text('LinkedIn: federico-gonzalez-cima', 110, 45);
-            doc.text((isSpanish ? 'Experiencia: ' : 'Experience: ') + '16+ ' + (isSpanish ? 'anos' : 'years'), 110, 50);
+            // Contact info - Right column (adjusted to not overlap with image)
+            doc.text((isSpanish ? 'Empresa: ' : 'Company: ') + 'MercadoLibre', 20, 55);
+            doc.text('LinkedIn: federico-gonzalez-cima', 110, 40);
+            doc.text((isSpanish ? 'Experiencia: ' : 'Experience: ') + '16+ ' + (isSpanish ? 'anos' : 'years'), 110, 45);
             
             // Reset text color and start content
             doc.setTextColor(0, 0, 0);
