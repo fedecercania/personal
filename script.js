@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const langButtons = document.querySelectorAll('.lang-btn');
     const elementsWithLang = document.querySelectorAll('[data-es], [data-en]');
     const pdfButton = document.getElementById('download-pdf');
+    const pdfSimpleButton = document.getElementById('download-pdf-simple');
     const previewButton = document.getElementById('preview-pdf');
     const pdfLoading = document.getElementById('pdf-loading');
     
@@ -49,50 +50,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 150);
     }
     
-    // Enhanced PDF Download functionality
+    // Enhanced PDF Download functionality - SIMPLIFIED
     function downloadPDF() {
         // Show loading indicator
         pdfLoading.style.display = 'flex';
         
-        // Get the CV content
+        console.log('📥 Starting SIMPLIFIED PDF generation...');
+        
+        // Use the original element directly with minimal modifications
         const cvContent = document.getElementById('cv-content');
         
-        console.log('📥 Starting download using working test approach...');
-        
-        // Create container using EXACTLY the same approach as the working test
-        const tempContainer = document.createElement('div');
-        tempContainer.innerHTML = cvContent.outerHTML;
-        
-        // Apply the EXACT same fixes that work in the test
-        fixPDFPositionAndColors(tempContainer);
-        
-        // Apply same positioning as test
-        tempContainer.style.cssText = `
-            position: static;
-            width: 800px;
-            max-width: 800px;
-            background: white;
-            margin: 0 auto;
-            color: #333;
-            font-family: Arial, sans-serif;
-            padding: 0;
-        `;
-        
-        document.body.appendChild(tempContainer);
-        
-        // Use SAME options as the working test
+        // Simple options that work
         const options = {
-            margin: [0.5, 0.5, 0.5, 0.5],
+            margin: 0.5,
             filename: `CV_Federico_Gonzalez_Cima_${currentLang.toUpperCase()}.pdf`,
-            image: { type: 'jpeg', quality: 1.0 },
+            image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2,
                 backgroundColor: '#ffffff',
-                logging: false,
+                logging: true,
                 useCORS: true,
-                allowTaint: true,
-                width: 800,
-                height: tempContainer.offsetHeight || 1000
+                allowTaint: true
             },
             jsPDF: { 
                 unit: 'in', 
@@ -101,31 +79,141 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         
-        // Generate PDF using SAME method as working test
-        html2pdf().set(options).from(tempContainer).save().then(() => {
-            console.log('✅ Download PDF generated successfully');
-            
-            // Clean up
-            document.body.removeChild(tempContainer);
+        // Generate PDF directly from the visible content
+        html2pdf().set(options).from(cvContent).save().then(() => {
+            console.log('✅ SIMPLIFIED PDF generated successfully');
             pdfLoading.style.display = 'none';
             
-            // Show success message
             showNotification(
-                currentLang === 'es' ? 'PDF descargado exitosamente!' : 'PDF downloaded successfully!',
+                currentLang === 'es' ? 'PDF generado exitosamente!' : 'PDF generated successfully!',
                 'success'
             );
             
         }).catch(error => {
-            console.error('❌ Error generating download PDF:', error);
-            
-            // Clean up
-            if (document.body.contains(tempContainer)) {
-                document.body.removeChild(tempContainer);
-            }
+            console.error('❌ Error generating simplified PDF:', error);
             pdfLoading.style.display = 'none';
-            
             showNotification('❌ Error generando PDF: ' + error.message, 'error');
         });
+    }
+    
+    // Comprehensive PDF content optimization
+    function optimizePDFContent(element) {
+        // Hide elements that shouldn't appear in PDF (don't remove, just hide)
+        const elementsToHide = element.querySelectorAll('.top-controls, .pdf-loading, .lang-btn, .pdf-btn, .preview-btn, .pdf-btn-simple');
+        elementsToHide.forEach(el => {
+            if (el) {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+            }
+        });
+        
+        // Add PDF-specific CSS classes
+        element.classList.add('pdf-optimized');
+        
+        // Optimize typography for PDF
+        const textElements = element.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, li, div');
+        textElements.forEach(el => {
+            el.style.fontFamily = 'Helvetica, Arial, sans-serif';
+            el.style.webkitFontSmoothing = 'antialiased';
+            el.style.textRendering = 'optimizeLegibility';
+        });
+        
+        // Fix header styling for PDF
+        const header = element.querySelector('.header');
+        if (header) {
+            header.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            header.style.webkitPrintColorAdjust = 'exact';
+            header.style.printColorAdjust = 'exact';
+            header.style.color = '#ffffff';
+            header.style.padding = '30px 0';
+        }
+        
+        // Optimize profile image
+        const profileImg = element.querySelector('.profile-image img');
+        if (profileImg) {
+            profileImg.style.width = '120px';
+            profileImg.style.height = '120px';
+            profileImg.style.borderRadius = '50%';
+            profileImg.style.objectFit = 'cover';
+            profileImg.style.border = '4px solid white';
+        }
+        
+        // Fix skill tags for better PDF rendering
+        const skillTags = element.querySelectorAll('.skill-tag');
+        skillTags.forEach(tag => {
+            tag.style.background = '#e3f2fd';
+            tag.style.color = '#1565c0';
+            tag.style.border = '1px solid #90caf9';
+            tag.style.borderRadius = '4px';
+            tag.style.padding = '4px 8px';
+            tag.style.fontSize = '12px';
+            tag.style.fontWeight = '500';
+            tag.style.webkitPrintColorAdjust = 'exact';
+            tag.style.printColorAdjust = 'exact';
+        });
+        
+        // Optimize sections for page breaks
+        const sections = element.querySelectorAll('.section');
+        sections.forEach((section, index) => {
+            section.style.pageBreakInside = 'avoid';
+            section.style.marginBottom = '25px';
+            section.classList.add('no-page-break');
+            
+            // Add page break before certain sections if needed
+            if (index > 0 && (section.querySelector('h3').textContent.includes('Experiencia') || 
+                               section.querySelector('h3').textContent.includes('Experience'))) {
+                section.classList.add('page-break-before');
+            }
+        });
+        
+        // Fix timeline items
+        const timelineItems = element.querySelectorAll('.timeline-item');
+        timelineItems.forEach(item => {
+            item.style.pageBreakInside = 'avoid';
+            item.style.marginBottom = '20px';
+            item.classList.add('no-page-break');
+        });
+        
+        // Optimize contact info
+        const contactItems = element.querySelectorAll('.contact-item');
+        contactItems.forEach(item => {
+            item.style.color = '#ffffff';
+            item.style.fontSize = '14px';
+        });
+        
+        // Fix content grid for PDF
+        const contentGrid = element.querySelector('.content-grid');
+        if (contentGrid) {
+            contentGrid.style.display = 'block';
+            contentGrid.style.columnCount = '1';
+        }
+        
+        // Ensure all text is selectable and properly colored
+        const allText = element.querySelectorAll('*');
+        allText.forEach(el => {
+            if (window.getComputedStyle(el).color === 'rgb(255, 255, 255)' && !el.closest('.header')) {
+                el.style.color = '#333333';
+            }
+        });
+        
+        // Add print-specific styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .pdf-optimized * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .pdf-optimized .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: white !important;
+            }
+            .pdf-optimized .skill-tag {
+                background: #e3f2fd !important;
+                color: #1565c0 !important;
+                border: 1px solid #90caf9 !important;
+            }
+        `;
+        element.appendChild(style);
     }
     
     // Apply PDF-specific styles to improve rendering
@@ -264,6 +352,61 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             previewPDF();
         });
+    }
+    
+    // Add event listener to PDF simple button
+    if (pdfSimpleButton) {
+        pdfSimpleButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            downloadPDFPure();
+        });
+    }
+    
+    // Safe PDF optimization function (doesn't break content)
+    function safePDFOptimization(element) {
+        console.log('🔧 Applying safe PDF optimizations...');
+        
+        // Hide control elements
+        const elementsToHide = element.querySelectorAll('.top-controls, .pdf-loading, .lang-btn, .pdf-btn, .preview-btn, .pdf-btn-simple');
+        elementsToHide.forEach(el => {
+            if (el) {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+            }
+        });
+        
+        // Basic styling fixes
+        element.style.background = '#ffffff';
+        element.style.color = '#333333';
+        element.style.fontFamily = 'Arial, sans-serif';
+        
+        // Fix header colors
+        const header = element.querySelector('.header');
+        if (header) {
+            header.style.background = '#667eea';
+            header.style.color = '#ffffff';
+            header.style.webkitPrintColorAdjust = 'exact';
+            header.style.printColorAdjust = 'exact';
+        }
+        
+        // Fix skill tags
+        const skillTags = element.querySelectorAll('.skill-tag');
+        skillTags.forEach(tag => {
+            tag.style.background = '#e3f2fd';
+            tag.style.color = '#1565c0';
+            tag.style.webkitPrintColorAdjust = 'exact';
+            tag.style.printColorAdjust = 'exact';
+        });
+        
+        // Ensure text is visible
+        const textElements = element.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6, li');
+        textElements.forEach(el => {
+            if (!el.closest('.header') && !el.classList.contains('skill-tag')) {
+                el.style.color = '#333333';
+            }
+        });
+        
+        console.log('✅ Safe PDF optimizations applied');
     }
     
     // Fix PDF positioning and color issues
@@ -591,14 +734,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setupPrintFallback();
     
-    // PDF Preview functionality - using the SAME approach as the working test
+    // PDF Preview functionality - SIMPLIFIED
     function previewPDF() {
-        console.log('🔍 Starting PDF preview using working test approach...');
+        console.log('🔍 Starting SIMPLIFIED PDF preview...');
         
         // Show loading indicator
         pdfLoading.style.display = 'flex';
         
-        // Get the CV content
+        // Get the CV content directly
         const cvContent = document.getElementById('cv-content');
         if (!cvContent) {
             console.error('❌ CV content not found!');
@@ -607,42 +750,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        console.log('✅ CV content found, creating clone with same method as test...');
-        
-        // Create container using EXACTLY the same approach as the working test
-        const pdfContainer = document.createElement('div');
-        pdfContainer.innerHTML = cvContent.outerHTML;
-        
-        // Apply the EXACT same fixes that work in the test
-        fixPDFPositionAndColors(pdfContainer);
-        
-        // Apply same positioning as test
-        pdfContainer.style.cssText = `
-            position: static;
-            width: 800px;
-            max-width: 800px;
-            background: white;
-            margin: 0 auto;
-            color: #333;
-            font-family: Arial, sans-serif;
-            padding: 0;
-        `;
-        
-        // Temporarily add to body for capture (same as test)
-        document.body.appendChild(pdfContainer);
-        
+        // Simple options for preview
         const options = {
-            margin: [0.5, 0.5, 0.5, 0.5],
+            margin: 0.5,
             filename: `CV_Federico_Gonzalez_Cima_${currentLang.toUpperCase()}_Preview.pdf`,
-            image: { type: 'jpeg', quality: 1.0 },
+            image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2,
                 backgroundColor: '#ffffff',
-                logging: false,
+                logging: true,
                 useCORS: true,
-                allowTaint: true,
-                width: 800,
-                height: pdfContainer.offsetHeight || 1000
+                allowTaint: true
             },
             jsPDF: { 
                 unit: 'in', 
@@ -651,12 +769,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         
-        html2pdf().set(options).from(pdfContainer).output('blob').then(function(pdfBlob) {
-            console.log('✅ Preview PDF generated successfully');
+        // Generate preview directly from visible content
+        html2pdf().set(options).from(cvContent).output('blob').then(function(pdfBlob) {
+            console.log('✅ SIMPLIFIED Preview PDF generated successfully');
             console.log('📊 PDF blob size:', pdfBlob.size, 'bytes');
             
-            // Clean up
-            document.body.removeChild(pdfContainer);
             pdfLoading.style.display = 'none';
             
             if (pdfBlob.size === 0) {
@@ -673,14 +790,8 @@ document.addEventListener('DOMContentLoaded', function() {
             showSimplePDFPreview(pdfBlob, pdfUrl);
             
         }).catch(error => {
-            console.error('❌ Error generating preview PDF:', error);
-            
-            // Clean up
-            if (document.body.contains(pdfContainer)) {
-                document.body.removeChild(pdfContainer);
-            }
+            console.error('❌ Error generating simplified preview PDF:', error);
             pdfLoading.style.display = 'none';
-            
             showNotification('❌ Error generando preview: ' + error.message, 'error');
         });
     }
@@ -877,6 +988,349 @@ document.addEventListener('DOMContentLoaded', function() {
             currentLang === 'es' ? 'PDF listo para descargar!' : 'PDF ready to download!',
             'success'
         );
+    }
+    
+    // OPTION 2: Server-side PDF generation (Professional quality)
+    async function downloadPDFServerSide() {
+        try {
+            pdfLoading.style.display = 'flex';
+            
+            // Get current page URL and language
+            const currentUrl = window.location.href;
+            const lang = currentLang;
+            
+            // Professional PDF API service (you can replace with your preferred service)
+            const apiUrl = 'https://api.html-pdf-api.com/v1/generate'; // Example service
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': 'Bearer YOUR_API_KEY' // Add your API key
+                },
+                body: JSON.stringify({
+                    url: currentUrl,
+                    options: {
+                        format: 'A4',
+                        margin: {
+                            top: '10mm',
+                            right: '10mm',
+                            bottom: '10mm',
+                            left: '10mm'
+                        },
+                        printBackground: true,
+                        displayHeaderFooter: false,
+                        preferCSSPageSize: true,
+                        waitForNetworkIdle: true,
+                        waitTime: 2000,
+                        quality: 100
+                    },
+                    filename: `CV_Federico_Gonzalez_Cima_${lang.toUpperCase()}.pdf`
+                })
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `CV_Federico_Gonzalez_Cima_${lang.toUpperCase()}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification(
+                    currentLang === 'es' ? 'PDF profesional generado!' : 'Professional PDF generated!',
+                    'success'
+                );
+            } else {
+                throw new Error('Error en el servicio de PDF');
+            }
+            
+        } catch (error) {
+            console.error('Error generating server-side PDF:', error);
+            showNotification(
+                'Error con PDF profesional. Usando método alternativo...',
+                'warning'
+            );
+            // Fallback to client-side generation
+            downloadPDF();
+        } finally {
+            pdfLoading.style.display = 'none';
+        }
+    }
+    
+    // OPTION 3: Pure jsPDF generation with complete information
+    function downloadPDFPure() {
+        try {
+            pdfLoading.style.display = 'flex';
+            
+            // Import jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Get current language
+            const isSpanish = currentLang === 'es';
+            
+            // Add fonts for better support
+            doc.setFont('helvetica');
+            
+            // Header background
+            doc.setFillColor(102, 126, 234);
+            doc.rect(0, 0, 210, 60, 'F');
+            
+            // Name
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(20);
+            doc.text('Federico Gonzalez Cima', 20, 20);
+            
+            // Title
+            doc.setFontSize(12);
+            doc.text('Software Technical Leader', 20, 30);
+            
+            // Contact info - Left column
+            doc.setFontSize(8);
+            doc.text((isSpanish ? 'Email: ' : 'Email: ') + 'cafegoci@gmail.com', 20, 40);
+            doc.text((isSpanish ? 'Telefono: ' : 'Phone: ') + '+598 94 769 587', 20, 45);
+            doc.text((isSpanish ? 'Ubicacion: ' : 'Location: ') + 'Montevideo, Uruguay', 20, 50);
+            
+            // Contact info - Right column
+            doc.text((isSpanish ? 'Empresa: ' : 'Company: ') + 'MercadoLibre', 110, 40);
+            doc.text('LinkedIn: federico-gonzalez-cima', 110, 45);
+            doc.text((isSpanish ? 'Experiencia: ' : 'Experience: ') + '16+ ' + (isSpanish ? 'anos' : 'years'), 110, 50);
+            
+            // Reset text color and start content
+            doc.setTextColor(0, 0, 0);
+            let yPos = 75;
+            
+            // About section
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'ACERCA DE MI' : 'ABOUT ME', 20, yPos);
+            yPos += 8;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            const aboutText = isSpanish ? 
+                'Software Technical Leader con mas de 16 anos de experiencia en desarrollo de software, especializado en arquitecturas de microservicios, procesamiento de pagos y analisis de datos. Actualmente liderando equipos tecnicos en MercadoLibre, con pasion por la innovacion y la mejora continua de procesos. Experiencia en empresas de procesamiento de pagos y consultoria tecnologica internacional.' :
+                'Software Technical Leader with over 16 years of software development experience, specialized in microservices architectures, payment processing, and data analysis. Currently leading technical teams at MercadoLibre, with passion for innovation and continuous process improvement. Experience in payment processing companies and international technology consulting.';
+            
+            const splitAbout = doc.splitTextToSize(aboutText, 170);
+            doc.text(splitAbout, 20, yPos);
+            yPos += splitAbout.length * 4 + 12;
+            
+            // Technical Skills section
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'HABILIDADES TECNICAS' : 'TECHNICAL SKILLS', 20, yPos);
+            yPos += 8;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            
+            // Programming Languages
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.text(isSpanish ? 'Lenguajes:' : 'Languages:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Java, Go, Python, .NET/C#, JavaScript', 70, yPos);
+            yPos += 6;
+            
+            // Frameworks
+            doc.setFont('helvetica', 'bold');
+            doc.text(isSpanish ? 'Frameworks:' : 'Frameworks:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Spring, Hibernate, JPA, JSF, EJB, Apache Camel', 70, yPos);
+            yPos += 6;
+            
+            // Databases
+            doc.setFont('helvetica', 'bold');
+            doc.text(isSpanish ? 'Bases de Datos:' : 'Databases:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Oracle, PostgreSQL, DB2, MySQL, BigQuery', 70, yPos);
+            yPos += 6;
+            
+            // Data & Analytics
+            doc.setFont('helvetica', 'bold');
+            doc.text(isSpanish ? 'Datos y Analisis:' : 'Data & Analytics:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text('BigQuery, Looker Studio, Tableau, ETL, Data Warehouse', 70, yPos);
+            yPos += 6;
+            
+            // Architecture & DevOps
+            doc.setFont('helvetica', 'bold');
+            doc.text(isSpanish ? 'Arquitectura:' : 'Architecture:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Microservices, REST APIs, Docker, AWS, Maven', 70, yPos);
+            yPos += 12;
+            
+            // Professional Experience section
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'EXPERIENCIA PROFESIONAL' : 'PROFESSIONAL EXPERIENCE', 20, yPos);
+            yPos += 8;
+            
+            // Complete experience list
+            const experiences = [
+                {
+                    period: isSpanish ? 'Jun 2022 - Presente' : 'Jun 2022 - Present',
+                    title: 'Software Technical Leader',
+                    company: 'MercadoLibre',
+                    description: isSpanish ? 
+                        'Liderazgo tecnico en sistemas de emision de pagos. Tecnologias: Go, Python, BigQuery, Looker Studio, Tableau ETLs.' :
+                        'Technical leadership in payment issuance systems. Technologies: Go, Python, BigQuery, Looker Studio, Tableau ETLs.'
+                },
+                {
+                    period: isSpanish ? 'Mar 2019 - Jun 2022' : 'Mar 2019 - Jun 2022',
+                    title: 'Java Architect',
+                    company: 'Globant',
+                    description: isSpanish ? 
+                        'Consultor para Electronic Arts (EA). Arquitectura de sistemas de gaming y microservicios.' :
+                        'Consultant for Electronic Arts (EA). Gaming systems architecture and microservices.'
+                },
+                {
+                    period: isSpanish ? 'Ene 2016 - Mar 2019' : 'Jan 2016 - Mar 2019',
+                    title: '.NET Software Architect',
+                    company: 'PayGroup',
+                    description: isSpanish ? 
+                        'Desarrollo de procesadores de pago. Arquitectura .NET y sistemas de alta disponibilidad.' :
+                        'Payment processor development. .NET architecture and high availability systems.'
+                },
+                {
+                    period: isSpanish ? 'Ago 2012 - Ene 2016' : 'Aug 2012 - Jan 2016',
+                    title: 'Senior Java Developer',
+                    company: 'Scanntech',
+                    description: isSpanish ? 
+                        'Departamento de BI y Data Mining. Desarrollo de soluciones de inteligencia de negocios.' :
+                        'BI and Data Mining department. Business intelligence solutions development.'
+                }
+            ];
+            
+            experiences.forEach((exp, index) => {
+                // Check if we need a new page
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.text(exp.title, 20, yPos);
+                
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.text(exp.company, 20, yPos + 5);
+                doc.text(exp.period, 150, yPos);
+                
+                // Description
+                doc.setFontSize(9);
+                const splitDesc = doc.splitTextToSize(exp.description, 170);
+                doc.text(splitDesc, 20, yPos + 10);
+                
+                yPos += 10 + (splitDesc.length * 4) + 8;
+            });
+            
+            // Check if we need a new page for education
+            if (yPos > 220) {
+                doc.addPage();
+                yPos = 20;
+            }
+            
+            // Education section
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'EDUCACION' : 'EDUCATION', 20, yPos);
+            yPos += 8;
+            
+            // Education entries
+            const education = [
+                {
+                    period: '2014 - 2016',
+                    degree: isSpanish ? 'Maestria en Explotacion de Datos y Gestion del Conocimiento' : 'Master in Data Mining and Knowledge Management',
+                    institution: 'Universidad Austral, Argentina',
+                    status: isSpanish ? '(Tesis pendiente)' : '(Thesis pending)'
+                },
+                {
+                    period: '2005 - 2012',
+                    degree: isSpanish ? 'Ingeniero en Computacion' : 'Computer Engineering',
+                    institution: 'Universidad de la Republica, Uruguay',
+                    status: ''
+                }
+            ];
+            
+            education.forEach(edu => {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.text(edu.degree, 20, yPos);
+                
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.text(edu.institution + ' ' + edu.status, 20, yPos + 5);
+                doc.text(edu.period, 150, yPos);
+                
+                yPos += 15;
+            });
+            
+            // Teaching Experience
+            yPos += 5;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'EXPERIENCIA DOCENTE' : 'TEACHING EXPERIENCE', 20, yPos);
+            yPos += 8;
+            
+            const teaching = [
+                {
+                    period: isSpanish ? 'Mar 2013 - Mar 2019' : 'Mar 2013 - Mar 2019',
+                    position: isSpanish ? 'Profesor de Metodos Numericos' : 'Numerical Methods Professor',
+                    institution: 'Universidad Catolica del Uruguay'
+                },
+                {
+                    period: isSpanish ? 'Mar 2010 - Dic 2010' : 'Mar 2010 - Dec 2010',
+                    position: isSpanish ? 'Profesor Ayudante' : 'Teaching Assistant',
+                    institution: 'Universidad de la Republica'
+                }
+            ];
+            
+            teaching.forEach(teach => {
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.text(teach.position, 20, yPos);
+                
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.text(teach.institution, 20, yPos + 4);
+                doc.text(teach.period, 150, yPos);
+                
+                yPos += 12;
+            });
+            
+            // Languages
+            yPos += 5;
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'IDIOMAS' : 'LANGUAGES', 20, yPos);
+            yPos += 8;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text(isSpanish ? 'Espanol: Nativo' : 'Spanish: Native', 20, yPos);
+            doc.text(isSpanish ? 'Ingles: Intermedio' : 'English: Intermediate', 80, yPos);
+            
+            // Save the PDF
+            doc.save(`CV_Federico_Gonzalez_Cima_${currentLang.toUpperCase()}.pdf`);
+            
+            showNotification(
+                currentLang === 'es' ? 'PDF completo generado!' : 'Complete PDF generated!',
+                'success'
+            );
+            
+        } catch (error) {
+            console.error('Error generating pure PDF:', error);
+            showNotification('Error generando PDF simple: ' + error.message, 'error');
+        } finally {
+            pdfLoading.style.display = 'none';
+        }
     }
 });
 

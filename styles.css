@@ -95,7 +95,7 @@ body {
     transform: translateY(0);
 }
 
-/* PDF Download Button */
+/* PDF Download Buttons */
 .pdf-btn {
     background: #10b981;
     color: white;
@@ -119,6 +119,32 @@ body {
 }
 
 .pdf-btn:active {
+    transform: translateY(0);
+}
+
+.pdf-btn-simple {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
+}
+
+.pdf-btn-simple:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.pdf-btn-simple:active {
     transform: translateY(0);
 }
 
@@ -478,6 +504,44 @@ body {
     color: white;
     text-align: center;
     padding: 30px 0;
+}
+
+/* PDF Generation Styles - Force visibility */
+#cv-content {
+    background: white !important;
+    color: #333333 !important;
+}
+
+#cv-content * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+#cv-content .header {
+    background: #667eea !important;
+    color: white !important;
+}
+
+#cv-content .skill-tag {
+    background: #e3f2fd !important;
+    color: #1565c0 !important;
+    border: 1px solid #90caf9 !important;
+}
+
+#cv-content .name {
+    color: white !important;
+}
+
+#cv-content .title {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+#cv-content .contact-item {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#cv-content .section-title {
+    color: #1e293b !important;
 }
 
 /* PDF Print Styles */
