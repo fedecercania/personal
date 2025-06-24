@@ -1184,8 +1184,8 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             const aboutText = isSpanish ? 
-                'Software Technical Leader con mas de 16 anos de experiencia en desarrollo de software, especializado en arquitecturas de microservicios, procesamiento de pagos y analisis de datos. Actualmente liderando equipos tecnicos en MercadoLibre, con pasion por la innovacion y la mejora continua de procesos. Experiencia en empresas de procesamiento de pagos y consultoria tecnologica internacional.' :
-                'Software Technical Leader with over 16 years of software development experience, specialized in microservices architectures, payment processing, and data analysis. Currently leading technical teams at MercadoLibre, with passion for innovation and continuous process improvement. Experience in payment processing companies and international technology consulting.';
+                'Software Technical Leader con mas de 16 anos de experiencia en desarrollo de software, especializado en arquitecturas de microservicios, procesamiento de pagos y analisis de datos. Actualmente liderando equipo de 12 personas en MercadoLibre, utilizando ampliamente IA para vincular clearing con autorizaciones. Experiencia en implementacion de sistemas de pagos en multiples paises de America Latina y desarrollo de plataformas de gaming online.' :
+                'Software Technical Leader with over 16 years of software development experience, specialized in microservices architectures, payment processing, and data analysis. Currently leading team of 12 people at MercadoLibre, extensively using AI to link clearing with authorizations. Experience in payment systems implementation across multiple Latin American countries and online gaming platform development.';
             
             const splitAbout = doc.splitTextToSize(aboutText, 170);
             doc.text(splitAbout, 20, yPos);
@@ -1234,6 +1234,13 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text(isSpanish ? 'Arquitectura:' : 'Architecture:', 20, yPos);
             doc.setFont('helvetica', 'normal');
             doc.text('Microservices, REST APIs, Docker, AWS, Maven', 70, yPos);
+            yPos += 6;
+            
+            // AI & Leadership
+            doc.setFont('helvetica', 'bold');
+            doc.text(isSpanish ? 'IA y Liderazgo:' : 'AI & Leadership:', 20, yPos);
+            doc.setFont('helvetica', 'normal');
+            doc.text(isSpanish ? 'Inteligencia Artificial, Liderazgo de equipos (12 personas)' : 'Artificial Intelligence, Team Leadership (12 people)', 70, yPos);
             yPos += 12;
             
             // Professional Experience section
@@ -1249,24 +1256,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'Software Technical Leader',
                     company: 'MercadoLibre',
                     description: isSpanish ? 
-                        'Liderazgo tecnico en sistemas de emision de pagos. Tecnologias: Go, Python, BigQuery, Looker Studio, Tableau ETLs.' :
-                        'Technical leadership in payment issuance systems. Technologies: Go, Python, BigQuery, Looker Studio, Tableau ETLs.'
+                        'Lider del equipo de procesador emisor, dirigiendo analisis de datos y generando oportunidades de mejora en procesos actuales. Principal desafio: vincular clearing con autorizaciones (matching). Utilizacion amplia de IA, liderando equipo de 12 personas. Tecnologias: Go, Python, BigQuery, Looker Studio, Tableau ETLs.' :
+                        'Leader of issuer processor team, driving data analysis and generating improvement opportunities in current processes. Main challenge: linking clearing with authorizations (matching). Extensive use of AI, leading team of 12 people. Technologies: Go, Python, BigQuery, Looker Studio, Tableau ETLs.'
                 },
                 {
                     period: isSpanish ? 'Mar 2019 - Jun 2022' : 'Mar 2019 - Jun 2022',
                     title: 'Java Architect',
                     company: 'Globant',
                     description: isSpanish ? 
-                        'Consultor para Electronic Arts (EA). Arquitectura de sistemas de gaming y microservicios.' :
-                        'Consultant for Electronic Arts (EA). Gaming systems architecture and microservices.'
+                        'Consultor para Electronic Arts (EA). Desarrollo del backend del sistema pogo.com, pagina de minijuegos online. Arquitectura de sistemas de gaming y microservicios.' :
+                        'Consultant for Electronic Arts (EA). Backend development for pogo.com system, online mini-games platform. Gaming systems architecture and microservices.'
                 },
                 {
                     period: isSpanish ? 'Ene 2016 - Mar 2019' : 'Jan 2016 - Mar 2019',
                     title: '.NET Software Architect',
                     company: 'PayGroup',
                     description: isSpanish ? 
-                        'Desarrollo de procesadores de pago. Arquitectura .NET y sistemas de alta disponibilidad.' :
-                        'Payment processor development. .NET architecture and high availability systems.'
+                        'Diseno y ejecucion completa del negocio de tarjeta de credito: liquidacion, estados de cuenta, prelacion de pagos, calculos de intereses. Implantacion del sistema en multiples paises de America Latina: Mexico, Colombia, Uruguay, Brasil.' :
+                        'Complete design and execution of credit card business: settlement, account statements, payment precedence, interest calculations. System implementation in multiple Latin American countries: Mexico, Colombia, Uruguay, Brazil.'
                 },
                 {
                     period: isSpanish ? 'Ago 2012 - Ene 2016' : 'Aug 2012 - Jan 2016',
