@@ -1212,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.setFont('helvetica', 'bold');
             doc.text(isSpanish ? 'Frameworks:' : 'Frameworks:', 20, yPos);
             doc.setFont('helvetica', 'normal');
-            doc.text('Spring, Hibernate, JPA, JSF, EJB, Apache Camel', 70, yPos);
+            doc.text('Spring, Hibernate, JPA, JSF, EJB, Apache Camel, React', 70, yPos);
             yPos += 6;
             
             // Databases
@@ -1256,15 +1256,36 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             doc.text(isSpanish ? 'En desarrollo' : 'In development', 150, yPos);
+            yPos += 8;
             
             doc.setFontSize(9);
-            const projectDesc = isSpanish ? 
-                'Desarrollo de plataforma web con arquitectura agentica para automatización inteligente. Frontend con React para interfaz moderna. Automatizaciones complejas con n8n.' :
-                'Development of agentic web platform for intelligent automation. Frontend with React for modern interface. Complex automations with n8n.';
-            const splitProject = doc.splitTextToSize(projectDesc, 170);
-            doc.text(splitProject, 20, yPos + 10);
             
-            yPos += 10 + (splitProject.length * 4) + 12;
+            // Project bullets
+            const projectBullets = isSpanish ? 
+                [
+                    'Arquitectura moderna de plataforma agentica que integra IA para automatización de procesos empresariales complejos',
+                    'Frontend responsivo con React para gestión de agentes autónomos y monitoreo de automatizaciones',
+                    'Backend en Go asegurando alta performance y escalabilidad para workflows en paralelo',
+                    'Orquestación con n8n permitiendo integraciones sin código con múltiples servicios y APIs'
+                ] :
+                [
+                    'Modern agentic platform architecture integrating AI for complex business process automation',
+                    'Responsive React frontend for autonomous agents management and automation monitoring',
+                    'Go backend ensuring high performance and scalability for parallel workflows',
+                    'n8n orchestration enabling code-free integrations with multiple services and APIs'
+                ];
+            
+            projectBullets.forEach(bullet => {
+                const splitBullet = doc.splitTextToSize(bullet, 165);
+                doc.text('• ' + splitBullet[0], 20, yPos);
+                for (let i = 1; i < splitBullet.length; i++) {
+                    yPos += 4;
+                    doc.text('  ' + splitBullet[i], 20, yPos);
+                }
+                yPos += 5;
+            });
+            
+            yPos += 7;
             
             // Professional Experience section
             doc.setFont('helvetica', 'bold');
