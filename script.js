@@ -1236,12 +1236,35 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.text('Microservices, REST APIs, Docker, AWS, Maven', 70, yPos);
             yPos += 6;
             
-            // AI & Leadership
+            // Architecture & DevOps (continued)
             doc.setFont('helvetica', 'bold');
-            doc.text(isSpanish ? 'IA y Liderazgo:' : 'AI & Leadership:', 20, yPos);
+            doc.text(isSpanish ? 'IA & Automatización:' : 'AI & Automation:', 20, yPos);
             doc.setFont('helvetica', 'normal');
-            doc.text(isSpanish ? 'Inteligencia Artificial, Liderazgo de equipos (12 personas)' : 'Artificial Intelligence, Team Leadership (12 people)', 70, yPos);
+            doc.text('n8n, LLMs, Inteligencia Artificial, Workflows', 70, yPos);
             yPos += 12;
+            
+            // Current Projects section
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(isSpanish ? 'PROYECTOS ACTUALES' : 'CURRENT PROJECTS', 20, yPos);
+            yPos += 8;
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.text(isSpanish ? 'Plataforma Web Agentica' : 'Agentic Web Platform', 20, yPos);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.text(isSpanish ? 'En desarrollo' : 'In development', 150, yPos);
+            
+            doc.setFontSize(9);
+            const projectDesc = isSpanish ? 
+                'Desarrollo de plataforma web con arquitectura agentica para automatización inteligente. Frontend con React para interfaz moderna. Automatizaciones complejas con n8n.' :
+                'Development of agentic web platform for intelligent automation. Frontend with React for modern interface. Complex automations with n8n.';
+            const splitProject = doc.splitTextToSize(projectDesc, 170);
+            doc.text(splitProject, 20, yPos + 10);
+            
+            yPos += 10 + (splitProject.length * 4) + 12;
             
             // Professional Experience section
             doc.setFont('helvetica', 'bold');
@@ -1252,12 +1275,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Complete experience list
             const experiences = [
                 {
-                    period: isSpanish ? 'Jun 2022 - Presente' : 'Jun 2022 - Present',
+                    period: isSpanish ? 'Jun 2022 - Sep 2025' : 'Jun 2022 - Sep 2025',
                     title: 'Software Technical Leader',
                     company: 'MercadoLibre',
                     description: isSpanish ? 
-                        'Lider del equipo de procesador emisor, dirigiendo analisis de datos y generando oportunidades de mejora en procesos actuales. Principal desafio: vincular clearing con autorizaciones (matching). Utilizacion amplia de IA, liderando equipo de 12 personas. Tecnologias: Go, Python, BigQuery, Looker Studio, Tableau ETLs.' :
-                        'Leader of issuer processor team, driving data analysis and generating improvement opportunities in current processes. Main challenge: linking clearing with authorizations (matching). Extensive use of AI, leading team of 12 people. Technologies: Go, Python, BigQuery, Looker Studio, Tableau ETLs.'
+                        'Lider del equipo de procesador emisor. Automatización de procesos con inteligencia artificial utilizando n8n. Dirigiendo análisis de datos y generando oportunidades de mejora. Principal desafio: vincular clearing con autorizaciones (matching). Utilizacion amplia de IA, liderando equipo de 12 personas. Tecnologias: Go, Python, BigQuery, n8n, Looker Studio, Tableau ETLs.' :
+                        'Leader of issuer processor team. Process automation with artificial intelligence using n8n. Driving data analysis and generating improvement opportunities. Main challenge: linking clearing with authorizations (matching). Extensive use of AI, leading team of 12 people. Technologies: Go, Python, BigQuery, n8n, Looker Studio, Tableau ETLs.'
                 },
                 {
                     period: isSpanish ? 'Mar 2019 - Jun 2022' : 'Mar 2019 - Jun 2022',
