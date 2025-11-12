@@ -1137,6 +1137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.rect(0, 0, 210, 60, 'F');
             
             // Load and add profile image
+            /*
             try {
                 const imgData = await loadImageAsBase64('fede.jpeg');
                 if (imgData) {
@@ -1150,6 +1151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.log('Could not load profile image, continuing without it:', error);
             }
+            */
             
             // Name
             doc.setTextColor(255, 255, 255);
